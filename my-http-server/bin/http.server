@@ -1,3 +1,54 @@
 #!/usr/bin/env node
 
-const program = require('commander)
+const { program } = require('commander')
+const Server = require('../lib/server')
+const config = require('./config')
+const chalk = require('chalk')
+
+program.name('my-http-server')
+
+const defaultConfig = {}
+
+const usageList = []
+
+const argv = require('minimist')(process.argv.slice(2))
+
+Object.entries(config).forEach(([key, value]) => {
+  defaultConfig[key] = value.default
+  usageList.push(value.usage)
+  program.option(value.option, value.descriptor)
+})
+
+if (argv.h || argv.help) {
+  console.log('Examples:')
+  usageList.forEach(line => {
+    console.log(` ${chalk.green(line)} \r`)
+  })
+}
+
+if (argv.d || argv.directory) {
+  defaultConfig.directory = argv.d || argv.directory
+}
+
+if (argv.p || argv.port) {
+  defaultConfig.port = argv.p || argv.port
+}
+
+program.parse(process.argv)
+
+function mergeOptions(defaultConfig, newConfig) {
+  const options = {}
+  for (const key in defaultConfig) {
+    if (!(key in newConfig)) {
+      options[key] = defaultConfig[key]
+    } else {
+      options[key] = newConfig[key]
+    }
+  }
+  return options
+}
+
+const options = mergeOptions(defaultConfig, program)
+
+const server = new Server(options)
+server.start()

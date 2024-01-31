@@ -1,21 +1,21 @@
 const config = {
   port: {
-    option: '-p,--port <n>',
+    option: '-p,--port <char>',
     descriptor: 'set your server port',
     default: 8080,
-    usage: 'my-http-server --port <n>',
+    usage: 'my-http-server --port <char>',
   },
   directory: {
-    option: '-d,--directory <n>',
+    option: '-d,--directory <char>',
     descriptor: 'set your server start directory',
     default: process.cwd(), // 当前目录下
-    usage: 'my-http-server --directory <n>'
+    usage: 'my-http-server --directory <char>'
   },
   cache: {
-    option: '-c,--cache <n>',
+    option: '-c,--cache <char>',
     descriptor: 'set your server cache',
     default: 'no-cache',
-    usage: 'my-http-server --cache <n>'
+    usage: 'my-http-server --cache <char>'
   },
 }
 
